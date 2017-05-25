@@ -49,7 +49,26 @@ export class HomePage {
     });
   }
   loadPhotos(): void{
+    // this.loaded = true;
+    this.dataService.getData().then((photos) => {
+      let savedPhotos: any = false;
+      if(typeof(photos) != "undefined"){
+        savedPhotos = JSON.parse(photos);
+      }
+      if(savedPhotos){
+        savedPhotos.forEach(savedPhoto => {
+          this.photos.push(new PhotoModel(savedPhoto.image, new Date(savedPhoto.date)));
+        });
+      }
+      if(this.photos.length > 0){
+        let today = new Date();
 
+        if(this.photos[0].date.setHours(0,0,0,0) === today.setHours(0,0,0,0)){
+          this.photoTaken = true;
+        }
+      }
+      this.loaded = true;
+    });
   }
 
   takePhoto(): any {
@@ -112,10 +131,21 @@ export class HomePage {
   }
 
   createPhoto(photo): void {
-
+    let newPhoto = new PhotoModel(photo, new Date());
+    this.photos.unshift(newPhoto);
+    this.save();
   }
 
   removePhoto(photo): void {
+    let today = new Date();
+    if(photo.date.setHours(0,0,0,) === today.setHours(0,0,0,0)){
+      this.photoTaken = false;
+    }
+    let index = this.photos.indexOf(photo);
+    if(index > -1){
+      this.photos.splice(index, 1);
+      this.save();
+    }
 
   }
 
