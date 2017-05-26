@@ -1,13 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'days-ago',
+  name: 'daysAago',
 })
 export class DaysAgoPipe implements PipeTransform {
-  /**
-   * Takes a value and makes it lowercase.
-   */
-  transform(value: string, ...args) {
-    return value.toLowerCase();
+
+  transform(value, args) {
+    let now = new Date();
+    let oneDay =  24 * 60 * 60 * 1000;
+    let diffDays = Math.round(Math.abs((value.getTime() - now.getTime())/(oneDay)));
+
+    return diffDays;
   }
 }
