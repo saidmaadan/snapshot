@@ -1,7 +1,7 @@
 import {Injectable, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'daysAgo',
+  name: 'daysAgo'
 })
 @Injectable()
 export class DaysAgoPipe implements PipeTransform {
