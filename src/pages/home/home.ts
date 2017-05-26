@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, AlertController, ModalController, Platform} from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { PhotoModel } from '../../models/photo-model';
 import { SimpleAlertProvider } from '../../providers/simple-alert';
 import { DataProvider } from '../../providers/data';
@@ -25,6 +26,7 @@ export class HomePage {
     public simpleAlert: SimpleAlertProvider,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
+    public socialSharing: SocialSharing,
     public camera: Camera,
     public file: File) {
 
@@ -150,10 +152,35 @@ export class HomePage {
   }
 
   playSlideshow(): void {
+    if(this.photos.length > 1){
+      let modal = this.modalCtrl.create('Slideshow', {photos: this.photos});
+      modal.present();
+    }else{
+      let alert = this.simpleAlert.createAlert('Oops!', 'You need at least two photos before you can play a slideshow.');
+      alert.present();
+    }
 
   }
 
   sharePhoto(image): void {
+
+    let alert = this.alertCtrl.create({
+      title: 'Nice one!',
+      message: 'You\'ve taken your photo for today, would you also like to share it?',
+      buttons: [
+        {
+          text: 'No, Thanks'
+        },
+        {
+          text: 'Share',
+          handler: () => {
+            this.socialSharing.share('I\'m taking a selfie every day with #SnapShot', null, image, null)
+          }
+        }
+      ]
+    });
+
+    alert.present();
 
   }
 
