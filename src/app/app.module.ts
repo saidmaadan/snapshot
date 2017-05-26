@@ -33,6 +33,10 @@ import { HomePage } from '../pages/home/home';
   providers: [
     DataProvider,
     SimpleAlertProvider,
+    LocalNotifications,
+    Camera,
+    File,
+    SocialSharing,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
